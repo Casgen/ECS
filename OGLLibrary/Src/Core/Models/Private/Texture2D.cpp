@@ -1,6 +1,6 @@
 ﻿#include <glad/glad.h>
 #include "../Public/Texture2D.h"
-#include <stb_image/stb_image.h>
+#include <stb_image.h>
 
 Texture2D::Texture2D(const std::string& filePath)
     : m_FilePath(filePath) ,m_Width(0), m_Height(0), m_BPP(0)

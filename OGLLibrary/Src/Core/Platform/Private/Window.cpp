@@ -7,8 +7,8 @@
 #include "../../Event/Public/KeyEvent.h"
 #include "../../Event/Public/MouseEvent.h"
 #include "../../Event/Public/WindowEvent.h"
-#include "imGui/imgui_impl_glfw.h"
-#include "imGui/imgui_impl_opengl3.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 
 Window::Window(const WindowProps& props)
     : m_Props(props)

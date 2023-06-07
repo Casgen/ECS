@@ -6,6 +6,8 @@
 #include "Core/Buffers/Public/VertexBufferLayout.h"
 #include "Core/Models/Public/Program.h"
 
+#include <glm/vec3.hpp>
+
 
 int Application::Run()
 {

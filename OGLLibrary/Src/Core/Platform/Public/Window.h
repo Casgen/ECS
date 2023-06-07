@@ -4,7 +4,8 @@
 
 #include "../../Event/Public/Event.h"
 #include "../../Models/Public/MouseState.h"
-#include <imGui/imgui.h>
+#include "imgui.h"
+#include <string>
 
 class Window
 {

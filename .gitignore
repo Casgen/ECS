@@ -1,5 +1,10 @@
 bin/
 obj/
+build/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/.cache
+/.vscode
+/Makefile
+/compile_commands.json

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Model3D.h"
+#include "glad/glad.h"
 #include "Ray.h"
 
 

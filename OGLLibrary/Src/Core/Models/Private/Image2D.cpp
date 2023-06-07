@@ -1,5 +1,5 @@
 ﻿#include "../Public/Image2D.h"
-#include <stb_image/stb_image.h>
+#include <stb_image.h>
 #include <glad/glad.h>
 
 Image2D::Image2D(const std::string& file_path, const unsigned int& format)

@@ -1,0 +1,10 @@
+[submodule "OGLLibrary/Vendor/glfw"]
+	path = OGLLibrary/Vendor/glfw
+	url = https://github.com/glfw/glfw
+[submodule "OGLLibrary/Vendor/glm"]
+	path = OGLLibrary/Vendor/glm
+	url = https://github.com/Casgen/glm
+[submodule "OGLLibrary/Vendor/imgui"]
+	path = OGLLibrary/Vendor/imgui
+	url = https://github.com/ocornut/imgui
+	branch = docking

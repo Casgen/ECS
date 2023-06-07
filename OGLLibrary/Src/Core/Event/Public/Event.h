@@ -3,6 +3,7 @@
 #define EVENT_CLASS_TYPE(type)  static EventType GetStaticType() {return EventType::type;} \
                                 [[nodiscard]] virtual EventType GetEventType() const override {return GetStaticType();}
 #include <functional>
+#include <string>
 
 enum class EventType
 {

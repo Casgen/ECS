@@ -4,7 +4,7 @@
 #include <ios>
 #include <iostream>
 
-#include <stb_image/stb_image.h>
+#include <stb_image.h>
 
 CubeMap::CubeMap(const std::string& dirPath)
 {

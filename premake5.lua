@@ -2,69 +2,83 @@
 workspace "ECS"
   configurations {"Debug", "Release"}
 
-project "OGLLibrary"
-  kind "StaticLib"
+  project "OGLLibrary"
+    kind "StaticLib"
 
-  language "C++"
-  cppdialect "C++20"
+    language "C++"
+    cppdialect "C++20"
 
-  location "%{prj.name}/build"
-  targetdir "%{prj.name}/bin/%{cfg.buildcfg}"
-  objdir "%{prj.name}/obj/%{cfg.buildcfg}"
+    location "%{prj.name}/build"
+    targetdir "%{prj.name}/bin/%{cfg.buildcfg}"
+    objdir "%{prj.name}/obj/%{cfg.buildcfg}"
 
-  files {
-    "%{prj.name}/Vendor/**",
-    "%{prj.name}/Src/**.cpp",
-    "%{prj.name}/Src/**.h",
-    "%{prj.name}/Src/**.hpp",
-  }
 
-  filter "configurations:Debug"
-    defines { "DEBUG" }
-    symbols "on"
+    links { "GLFW", "GLM", "GLAD", "ImGui" }
 
-  includedirs {
-    "%{prj.name}/Vendor",
-  }
+    filter "configurations:Debug"
+      defines { "DEBUG" }
+      symbols "on"
 
-  filter { "system:linux" }
-    links {"GL"}
+    includedirs {
+      "%{prj.name}/Vendor/glad/include", -- files are included like this <glad/glad.h>
+      "%{prj.name}/Vendor/glfw/include/",
+      "%{prj.name}/Vendor/glm/",
+      "%{prj.name}/Vendor/imgui/",
+      "%{prj.name}/Vendor/imgui/examples",
+      "%{prj.name}/Vendor/stb_image"
+    }
 
-  filter "configurations:Release"
-    defines { "NDEBUG" }
-    optimize "On"
+    files {
+      "%{prj.name}/Src/**.cpp",
+      "%{prj.name}/Src/**.h",
+      "%{prj.name}/Src/**.hpp",
+    }
 
-project "ECSImplementation"
-  kind "ConsoleApp"
-  language "C++"
-  cppdialect "C++20"
-  location "%{prj.name}/build"
-  targetdir "%{prj.name}/bin/%{cfg.buildcfg}"
-  objdir "%{prj.name}/obj/%{cfg.buildcfg}"
+    filter { "system:linux" }
+      links { "dl", "pthread" }
 
-  links { "OGLLibrary" }
+      defines { "_X11" }
 
-  includedirs {
-    "%{prj.name}/Vendor", -- includes the directories as such (#include <glm/vec4.hpp>)
-    "OGLLibrary/Vendor", -- includes the directories as such (#include <glm/vec4.hpp>)
-    "OGLLibrary/Src"
-  }
+    filter "configurations:Release"
+      defines { "NDEBUG" }
+      optimize "On"
 
-  files
-  {
-    "%{prj.name}/Src/**.h",
-    "%{prj.name}/Src/**.cpp",
-    "%{prj.name}/Src/**.hpp",
-  }
 
-  filter "configurations:Debug"
-    defines { "DEBUG" }
-    symbols "on"
+  project "ECSImplementation"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"
+    location "%{prj.name}/build"
+    targetdir "%{prj.name}/bin/%{cfg.buildcfg}"
+    objdir "%{prj.name}/obj/%{cfg.buildcfg}"
 
-  filter "configurations:Release"
-    defines { "NDEBUG" }
-    optimize "On"
+    links { "OGLLibrary", "GLFW", "GLM", "GLAD", "ImGui" }
 
-postbuildcommands {
-  "bear -- make"
-}
+    files
+    {
+      "%{prj.name}/Src/**.h",
+      "%{prj.name}/Src/**.cpp",
+      "%{prj.name}/Src/**.hpp",
+    }
+
+    includedirs {
+      "OGLLibrary/Src/",
+      "OGLLibrary/Vendor/glad/include/", -- files are included like this <glad/glad.h>
+      "OGLLibrary/Vendor/glfw/include/",
+      "OGLLibrary/Vendor/glm/",
+      "OGLLibrary/Vendor/imgui/",
+    }
+
+
+    filter "configurations:Debug"
+      defines { "DEBUG" }
+      symbols "on"
+
+    filter "configurations:Release"
+      defines { "NDEBUG" }
+      optimize "On"
+
+  include "OGLLibrary/Vendor/glfw.lua"
+  include "OGLLibrary/Vendor/glad.lua"
+  include "OGLLibrary/Vendor/glm.lua"
+  include "OGLLibrary/Vendor/imgui.lua"
