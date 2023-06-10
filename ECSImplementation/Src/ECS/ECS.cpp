@@ -37,6 +37,7 @@ ECS::ECS(uint32_t countOfComponents, ...)
     m_EntityPool = EntityStore();
     m_EntityPool.cap = INIT_CAP;
     m_EntityPool.count = 0;
+    m_EntityPool.cap = INIT_CAP;
     m_EntityPool.maskArray = std::vector<uint32_t>(INIT_CAP);
     m_EntityPool.flagArray = std::vector<uint32_t>(INIT_CAP);
 }
@@ -54,15 +55,20 @@ Entity ECS::CreateEntity()
         m_EntityPool.maskArray[newId] = 0;
     } else
     {
-        newId = lastId++;
-        m_EntityPool.flagArray.emplace_back(ENTITY_FLAG_IS_ALIVE);
-        m_EntityPool.maskArray.emplace_back(0);
+        // It's very important that the lastId gets incremented BEFORE the evaluation!
+        // otherwise it will go out of bounds!
+        newId = ++lastId;
+
         if (m_ComponentStore.cap == newId)
         {
             const size_t newDataSize = m_ComponentStore.size * m_ComponentStore.cap + m_ComponentStore.size * m_ComponentStore.cap / 2;
             m_ComponentStore.data = realloc(m_ComponentStore.data, newDataSize);
             m_ComponentStore.cap += m_ComponentStore.cap / 2;
         }
+
+        m_EntityPool.flagArray[newId] = ENTITY_FLAG_IS_ALIVE;
+        m_EntityPool.maskArray[newId] = 0;
+
     }
 
     return Entity(newId);
@@ -98,7 +104,10 @@ QueryResult* ECS::Query(uint32_t countOfComponent, ...)
 
     for (int i = 0; i < m_EntityPool.maskArray.size(); i++)
     {
-        if (m_EntityPool.flagArray[i] & ENTITY_FLAG_IS_ALIVE && desiredMask == (m_EntityPool.flagArray[i] & desiredMask))
+        bool isAlive = m_EntityPool.flagArray[i] & ENTITY_FLAG_IS_ALIVE;
+        bool hasDesiredComponents = desiredMask == (m_EntityPool.maskArray[i] & desiredMask);
+
+        if ( isAlive && hasDesiredComponents)
         {
             m_QueryResult.queriedEntities.emplace_back(i);
         }

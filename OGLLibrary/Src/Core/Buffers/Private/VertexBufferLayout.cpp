@@ -1,5 +1,6 @@
 #include "../Public/VertexBufferLayout.h"
 #include "glad/glad.h"
+#include <vector>
 
 
 template <>
@@ -23,13 +24,13 @@ void VertexBufferLayout::push<unsigned char>(unsigned int count)
   stride += VertexBufferElement::getSizeOfType(GL_UNSIGNED_BYTE) * count;
 }
 
+std::vector<VertexBufferElement> VertexBufferLayout::getElements() const {
+  return elements;
+}
+
 unsigned int VertexBufferLayout::getStride() const { return stride; }
 
 std::vector<VertexBufferElement> VertexBufferLayout::VertexBufferLayoutgetElements() const
 {
   return elements;
 }
-
-template void VertexBufferLayout::push<float>(unsigned int count);
-template void VertexBufferLayout::push<unsigned int>(unsigned int count);
-template void VertexBufferLayout::push<unsigned char>(unsigned int count);

@@ -51,6 +51,9 @@ private:
     std::vector<uint32_t> deadIdQueue;
     QueryResult m_QueryResult;
 
-    uint32_t lastId = 0;
+    /**
+    * Tells which ID was last inserted in ECS.
+    */
+    uint32_t lastId = -1;
     
 };

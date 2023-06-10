@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include <memory>
 
+#include <glad/glad.h>
+
+#include "Core/Buffers/Public/VertexArray.h"
 #include "Core/Renderer/Public/Renderer.h"
 #include "Core/Platform/Public/Window.h"
 #include "../ECS/ECS.h"
@@ -29,4 +32,5 @@ private:
 
     Program* m_Program;
     ECS* m_ECS;
+    VertexArray* m_Vao;
 };

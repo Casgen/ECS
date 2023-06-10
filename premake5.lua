@@ -2,6 +2,11 @@
 workspace "ECS"
   configurations {"Debug", "Release"}
 
+  include "OGLLibrary/Vendor/glfw.lua"
+  include "OGLLibrary/Vendor/glad.lua"
+  include "OGLLibrary/Vendor/glm.lua"
+  include "OGLLibrary/Vendor/imgui.lua"
+
   project "OGLLibrary"
     kind "StaticLib"
 
@@ -62,7 +67,7 @@ workspace "ECS"
     }
 
     includedirs {
-      "OGLLibrary/Src/",
+      "OGLLibrary/Src",
       "OGLLibrary/Vendor/glad/include/", -- files are included like this <glad/glad.h>
       "OGLLibrary/Vendor/glfw/include/",
       "OGLLibrary/Vendor/glm/",
@@ -77,8 +82,3 @@ workspace "ECS"
     filter "configurations:Release"
       defines { "NDEBUG" }
       optimize "On"
-
-  include "OGLLibrary/Vendor/glfw.lua"
-  include "OGLLibrary/Vendor/glad.lua"
-  include "OGLLibrary/Vendor/glm.lua"
-  include "OGLLibrary/Vendor/imgui.lua"

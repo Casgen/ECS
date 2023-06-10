@@ -3,6 +3,7 @@
 
 #include "../Public/Shader.h"
 #include "../../../Utils/Utils.h"
+#include <filesystem>
 
 
 Shader::Shader(const std::string& filename, unsigned int shaderType, bool& result)

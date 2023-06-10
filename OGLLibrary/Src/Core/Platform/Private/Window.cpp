@@ -7,6 +7,7 @@
 #include "../../Event/Public/KeyEvent.h"
 #include "../../Event/Public/MouseEvent.h"
 #include "../../Event/Public/WindowEvent.h"
+#include "GLFW/glfw3.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
@@ -18,19 +19,6 @@ Window::Window(const WindowProps& props)
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-
-    int flags;
-    glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-    {
-        std::cout << "Debug Context initialized." << std::endl;
-    }
-
-    /*
-     *   With this profile, The vertex array object (VAO) is not automatically created and bound when glEnableVertexAttribArray
-     *   is called, thus resulting in an error. We need to therefore create and Bind a VAO ourselves.
-     */
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     m_GlfwWindow = glfwCreateWindow(props.m_Width, props.m_Height, props.m_Title.c_str(), NULL, NULL);
@@ -39,12 +27,31 @@ Window::Window(const WindowProps& props)
         glfwTerminate();
         throw std::runtime_error("Couldn't create a GLFW window!");
     }
-
-
+    
     glfwMakeContextCurrent(m_GlfwWindow);
-    glfwSwapInterval(1); // Turns on/off V-Sync
 
+
+    /*
+     *   With this profile, The vertex array object (VAO) is not automatically created and bound when glEnableVertexAttribArray
+     *   is called, thus resulting in an error. We need to therefore create and Bind a VAO ourselves.
+     */
+
+
+    glfwSwapInterval(1); // Turns on/off V-Sync
     glfwSetWindowUserPointer(m_GlfwWindow, this);
+
+    if (gladLoadGL() == 0)
+        throw std::runtime_error("GLAD Couldn't be initialized");
+
+    int flags;
+    glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+    {
+        std::cout << "Debug Context initialized." << std::endl;
+    }
+
+    
+
 
     glfwSetKeyCallback(m_GlfwWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods) -> void
     {
@@ -146,6 +153,4 @@ Window::Window(const WindowProps& props)
     ImGui_ImplGlfw_InitForOpenGL(m_GlfwWindow, false);
     ImGui_ImplOpenGL3_Init("#version 450");
 
-    if (gladLoadGL() != 0)
-        throw std::runtime_error("GLEW Couldn't be initialized");
 }
